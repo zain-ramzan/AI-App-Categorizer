@@ -1,7 +1,6 @@
 """
 Category processing logic for the App Category Analyzer.
 """
-from rapidfuzz.process import extractOne  # Import extractOne for fuzzy matching
 
 from config import ENERGY_TAGS, STATIC_CATEGORIES
 from utils.helpers import normalize_category, keyword_mapping
