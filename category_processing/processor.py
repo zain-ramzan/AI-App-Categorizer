@@ -41,7 +41,7 @@ def select_main_category(app_name, raw_categories, static_categories, confidence
     direct_matches = [] # To store direct matches found in static categories
 
     for source, tags in processed_categories.items():
-        if game_detected == True:
+        if source in ["Gog", "Itch.io", "My Abandonware"]:
             continue
 
         normalized_tags = [normalize_category(tag) for tag in tags]
@@ -108,7 +108,7 @@ def select_main_category(app_name, raw_categories, static_categories, confidence
     for i, category in enumerate(static_categories):
         confidence = similarities[i].item()
         category_confidence[category] = confidence
-        print(f"  {category}: {confidence:.4f}")
+        # print(f"  {category}: {confidence:.4f}")
 
     # Find the best category and confidence (highest-ranking)
     best_index = similarities.argmax().item()
