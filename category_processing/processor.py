@@ -49,16 +49,16 @@ def select_main_category(app_name, raw_categories, static_categories, confidence
         mapped_tags = [tag.title() if isinstance(tag, str) else tag for tag in mapped_tags]
 
 
-        print(f"[NORMALIZATION] Source: {source}")
-        print(f"Raw Tags: {tags}")
-        print(f"Normalized Tags: {normalized_tags}")
-        print(f"Mapped Tags: {mapped_tags}")
+        # print(f"[NORMALIZATION] Source: {source}")
+        # print(f"Raw Tags: {tags}")
+        # print(f"Normalized Tags: {normalized_tags}")
+        # print(f"Mapped Tags: {mapped_tags}")
 
         # Check for direct keyword mapping in static categories
         for mapped_tag in mapped_tags:
             if mapped_tag in static_categories:
                 direct_matches.append(mapped_tag)
-                print(f"[DIRECT MATCH] Found direct mapping to '{mapped_tag}' in static categories")
+                # print(f"[DIRECT MATCH] Found direct mapping to '{mapped_tag}' in static categories")
 
 
         all_keywords.extend(mapped_tags) # Always add mapped tags to all_keywords for potential AI step
@@ -67,32 +67,32 @@ def select_main_category(app_name, raw_categories, static_categories, confidence
     # Check the number of unique direct matches
     unique_direct_matches = list(set(direct_matches))
 
-    if len(unique_direct_matches) == 1:
+    # if len(unique_direct_matches) == 1:
         # If exactly one direct match, return it
-        print(f"[FINAL DECISION] Found single direct mapping to '{unique_direct_matches[0]}', returning it.")
+        # print(f"[FINAL DECISION] Found single direct mapping to '{unique_direct_matches[0]}', returning it.")
         return unique_direct_matches[0]
-    elif len(unique_direct_matches) > 1:
+    # elif len(unique_direct_matches) > 1:
         # If multiple direct matches, proceed to AI step
-        print(f"[MULTIPLE DIRECT MATCHES] Found multiple direct matches: {unique_direct_matches}. Proceeding to AI semantic similarity.")
+        # print(f"[MULTIPLE DIRECT MATCHES] Found multiple direct matches: {unique_direct_matches}. Proceeding to AI semantic similarity.")
         # Continue to STEP 3 (AI semantic similarity)
-    else:
+    # else:
         # If no direct matches, proceed to AI step (as before)
-        print("[NO DIRECT MATCHES] No direct matches found. Proceeding to AI semantic similarity.")
+        # print("[NO DIRECT MATCHES] No direct matches found. Proceeding to AI semantic similarity.")
         # Continue to STEP 3 (AI semantic similarity)
 
 
     # STEP 3: AI semantic similarity (only if no single direct mapping was found)
     # Ensure all_keywords is not empty before proceeding to AI
     if not all_keywords and game_detected:
-        print("[GAME FALLBACK] No keywords for AI, returning 'Game'")
+        # print("[GAME FALLBACK] No keywords for AI, returning 'Game'")
         return "Game"
     elif not all_keywords:
-        print("[FALLBACK] No keywords for AI, returning 'Others'")
+        # print("[FALLBACK] No keywords for AI, returning 'Others'")
         return "Others"
 
     # Eliminate duplicate keywords
     unique_keywords = list(set(all_keywords))
-    print(f"[AI SEMANTIC MATCH] Unique keywords for AI: {unique_keywords}")
+    # print(f"[AI SEMANTIC MATCH] Unique keywords for AI: {unique_keywords}")
 
 
     query_text = f"{app_name} {' '.join(unique_keywords)}" # Use unique_keywords
@@ -102,7 +102,7 @@ def select_main_category(app_name, raw_categories, static_categories, confidence
     similarities = util.cos_sim(query_embedding, category_embeddings)[0]
 
     # Calculate and print confidence for every category
-    print("[AI SEMANTIC MATCH] Confidence scores for each static category:")
+    # print("[AI SEMANTIC MATCH] Confidence scores for each static category:")
     category_confidence = {}
     for i, category in enumerate(static_categories):
         confidence = similarities[i].item()
@@ -115,18 +115,18 @@ def select_main_category(app_name, raw_categories, static_categories, confidence
     confidence = similarities[best_index].item()
 
 
-    print(f"[AI SEMANTIC MATCH] Highest-ranking category: '{best_category}' with confidence {confidence:.4f}")
+    # print(f"[AI SEMANTIC MATCH] Highest-ranking category: '{best_category}' with confidence {confidence:.4f}")
     print(best_category)
 
     # STEP 4: Apply confidence threshold
     if confidence >= confidence_threshold:
-        print(f"[FINAL DECISION] Using AI-selected category '{best_category}' (confidence above threshold)")
+        # print(f"[FINAL DECISION] Using AI-selected category '{best_category}' (confidence above threshold)")
         return best_category
     elif game_detected:
-        print("[FINAL DECISION] Confidence below threshold, fallback to 'Game'")
+        # print("[FINAL DECISION] Confidence below threshold, fallback to 'Game'")
         return "Game"
     else:
-        print("[FINAL DECISION] Confidence below threshold, fallback to 'Others'")
+        # print("[FINAL DECISION] Confidence below threshold, fallback to 'Others'")
         return "Others"
 
 
