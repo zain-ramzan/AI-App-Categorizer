@@ -48,7 +48,7 @@ The categorization process employs a combination of algorithms, each serving a s
     *   **Decision Logic:** Simple conditional checks based on predefined criteria.
     *   **Pseudocode:**
 
-
+ ```python
     IF source is in ["Gog", "Itch.io", "My Abandonware"]:
         return "Game"
 
@@ -58,7 +58,7 @@ The categorization process employs a combination of algorithms, each serving a s
     *   **Decision Logic:** Look up normalized input in a keyword-to-category map. If multiple matches occur, or no direct match is found, proceed to semantic similarity.
     *   **Pseudocode (Simplified):**
 
-
+ ```python
     normalized_category = normalize(raw_category)
     potential_categories = lookup_in_keyword_map(normalized_category)
 
@@ -72,7 +72,7 @@ The categorization process employs a combination of algorithms, each serving a s
     *   **Decision Logic:** Calculate cosine similarity between the embeddings. The static category with the highest similarity score above a defined `confidence_threshold` is selected.
     *   **Pseudocode (Simplified):**
 
-
+ ```python
     input_embedding = model.encode(raw_categories)
     static_category_embeddings = {cat: model.encode(cat) for cat in static_categories}
 
@@ -96,7 +96,7 @@ The categorization process employs a combination of algorithms, each serving a s
     *   **Decision Logic:** If the confidence is below the threshold and a "game source" was identified, assign "Game". Otherwise, assign "Others".
     *   **Pseudocode:**
 
-
+ ```python
     IF confidence < confidence_threshold:
         IF game_source_exists:
             return "Game"
